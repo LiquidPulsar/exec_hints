@@ -126,7 +126,7 @@ foo('a1',{'213':'BaNaNa','444':'BoBa'})
 >>> {213: ('b', 'a', 'n', 'a', 'n', 'a'), 444: ('b', 'o', 'b', 'a')}
 ```
 Uhh, it works on a lot of stuff :)
-Notably you can manipulate `*args` and `**kwargs` as normal
+Notably you can manipulate `*args` and `**kwargs` as normal.
 Works with defaults too, but it will try to apply the hint to the default provided
 ```py
 @exec_hints
@@ -136,7 +136,7 @@ def a(a,b:str.upper,c:tuple[int],d=12,*e:lambda x:map(str,x),f:int|Literal(-3)=3
 a(1,'bb',['2','3'],4,5,banana=1,apple=2)
 >>> 1 BB (2, 3) 4 ('5',) 3 {'banana': '1', 'apple': '2'}
 ```
-you can typehint return values too :)
+You can typehint return values too 🎉
 ```py
 
 @exec_hints
