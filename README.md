@@ -42,7 +42,7 @@ def foo(arg:dict[int]):
 foo({'a':'123',12:13.2})
 >>> {'a': 123, 12: 13} dict_keys(['a', 12])
 ```
-works with Unions (more on that later)
+Works with Unions (more on that later)
 ```py
 @exec_hints
 def foo(arg:set[int|str]):
