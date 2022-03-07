@@ -1,24 +1,29 @@
 import inspect, types, typing
 
 def apply_hint(arg,hint):
-    if isinstance(hint,types.GenericAlias):
+    if isinstance(hint, types.GenericAlias):
         b = hint.__args__
         t = hint.__mro__[0]
-        if b:
-            if isinstance(arg,dict):
-                if len(b) == 1:
-                    return {k:apply_hint(v,b[0]) for k,v in arg.items()}
-                elif len(b) == 2:
-                    return {apply_hint(k,b[0]):apply_hint(v,b[1]) for k,v in arg.items()}
-		raise ValueError(f'Invalid number of subhints specified for arg of type dict: {len(b)} not in (1, 2), no hint application method found')
-            elif hasattr(t, '__iter__'):
-                if len(b) == 1:
-                    return t(apply_hint(v,b[0]) for v in arg)
-                elif len(b) == len(arg):
-                    return t(apply_hint(g,f) for f,g in zip(b,arg))
-		raise ValueError(f'Invalid number of subhints specified for iterable type {t}: {len(b)} not in (1, {len(arg)}), no hint application method found')
-        else:
+        if not b:
             return t(arg)
+        if isinstance(arg, dict):
+            if len(b) == 1:
+                return {k: apply_hint(v, b[0]) for k, v in arg.items()}
+            elif len(b) == 2:
+                return {
+                    apply_hint(k, b[0]): apply_hint(v, b[1]) for k, v in arg.items()
+                }
+            raise ValueError(
+                f"Invalid number of subhints specified for arg of type dict: {len(b)} not in (1, 2), no hint application method found"
+            )
+        elif hasattr(t, "__iter__"):
+            if len(b) == 1:
+                return t(apply_hint(v, b[0]) for v in arg)
+            elif len(b) == len(arg):
+                return t(apply_hint(g, f) for f, g in zip(b, arg))
+        raise ValueError(
+            f"Invalid number of subhints specified for iterable type {t}: {len(b)} not in (1, {len(arg)}), no hint application method found"
+        )
     elif isinstance(hint,(types.UnionType,_UnionType)):
         b = hint.__args__
         for opt in b:
@@ -81,6 +86,7 @@ class _UnionType:
 class Literal:
     def __init__(self,v):
         self.v = v
+    __class_getitem__ = __init__
     def __or__(self, other):
         if isinstance(other, (types.UnionType,_UnionType)):
             return _UnionType(self.v,*other.__args__)
