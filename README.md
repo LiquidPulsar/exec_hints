@@ -104,10 +104,11 @@ def foo(arg:int|Literal(0)):
 foo('banana')
 >>> 0
 ```
-We can use it to chain builtins that wouldnt normally be allowed
+We can use it to chain builtins that wouldnt normally be allowed.
+Also note you can use it with `[]` syntax too
 ```py
 @exec_hints
-def foo(arg:int|Literal(str.upper)):
+def foo(arg:int|Literal[str.upper]):
     print(arg)
 
 foo('banana')
@@ -138,7 +139,6 @@ a(1,'bb',['2','3'],4,5,banana=1,apple=2)
 ```
 You can typehint return values too 🎉
 ```py
-
 @exec_hints
 def foo(arg:int|Literal(str.upper)) -> lambda x:tuple(reversed(x)):
     print(arg)
