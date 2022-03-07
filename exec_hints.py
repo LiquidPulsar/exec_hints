@@ -72,11 +72,13 @@ def exec_hints(func):
 class _UnionType:
     def  __init__(self,*args):
         self.__args__ = list(args)
+
     def __or__(self, other):
         if isinstance(other, (types.UnionType,_UnionType)):
             print(self,other)
             return _UnionType(*self.__args__,*other.__args__)
         return _UnionType(*self.__args__,other)
+
     def __ror__(self, other):
         if isinstance(other, (types.UnionType,_UnionType)):
             print(self,other)
@@ -86,12 +88,16 @@ class _UnionType:
 class Literal:
     def __init__(self,v):
         self.v = v
-    __class_getitem__ = __init__
+
+    @classmethod
+    def __class_getitem__(cls,x): 
+        return cls(x)
+
     def __or__(self, other):
         if isinstance(other, (types.UnionType,_UnionType)):
             return _UnionType(self.v,*other.__args__)
-
         return _UnionType(self.v,other)
+
     def __ror__(self, other):
         if isinstance(other, (types.UnionType,_UnionType)):
             print(other.__args__)
@@ -99,7 +105,4 @@ class Literal:
         return _UnionType(other,self.v)
 
     def __call__(self,arg):
-        if callable(arg):
-            return self.v(arg)
-        else:
-            return self.v
+        return self.v(arg) if callable(arg) else self.v
