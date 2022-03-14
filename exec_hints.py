@@ -1,4 +1,4 @@
-import inspect, types, typing
+import inspect, types, typing, sys
 
 def apply_hint(arg,hint):
     if isinstance(hint, types.GenericAlias):
@@ -106,3 +106,8 @@ class Literal:
 
     def __call__(self,arg):
         return self.v(arg) if callable(arg) else self.v
+
+
+sys.modules[__name__].__class__ = type(
+    "M", (types.ModuleType,), {"__call__": lambda self, func: exec_hints(func)}
+)

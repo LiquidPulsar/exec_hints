@@ -1,0 +1,14 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "exec_hints"
+authors = [{ name = "LiquidPulsar" }]
+readme = "README.md"
+license = { file = "LICENSE" }
+version = "0.1.0"
+description = "Pretty comprehensive typehint evaluator, gives your Python functions that extra bit of zazz and illegibility they always needed."
+
+[project.urls]
+Home = "https://github.com/LiquidPulsar/exec_hints"
