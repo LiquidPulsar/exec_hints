@@ -1,5 +1,5 @@
 import exec_hints
-from exec_hints import _UnionType, Literal
+from exec_hints import Literal
 
 def test_exec_hints1():
     @exec_hints
