@@ -6,6 +6,9 @@ For all examples, here's the obvious prerequisite
 ```py
 from exec_hints import _UnionType, exec_hints, Literal
 ```
+Alternatively, you can just `import exec_hints` and use the module as a callable!
+
+
 Let's start off small: you can specify a hint on an argument and it'll convert it
 ```py
 @exec_hints
