@@ -66,6 +66,7 @@ def exec_hints(func):
         for k,v in zip(spec.kwonlyargs,kwonlyvals):
             kwargs[k] = apply_hint(v,ann[k]) if k in ann else v
     x = func(*args,**kwargs)
+    return x
     return apply_hint(x,ann['return']) if 'return' in ann else x
   return inner
 
