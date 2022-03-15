@@ -12,3 +12,6 @@ description = "Pretty comprehensive typehint evaluator, gives your Python functi
 
 [project.urls]
 Home = "https://github.com/LiquidPulsar/exec_hints"
+
+[tool.flit.sdist]
+exclude = [".pytest_cache","test_with_pytest.py"]

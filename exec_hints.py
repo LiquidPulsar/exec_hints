@@ -100,7 +100,6 @@ class Literal:
 
     def __ror__(self, other):
         if isinstance(other, (types.UnionType,_UnionType)):
-            print(other.__args__)
             return _UnionType(*other.__args__,self.v)
         return _UnionType(other,self.v)
 
