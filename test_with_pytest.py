@@ -103,3 +103,16 @@ def test_exec_hints14():
         return arg
 
     assert foo('banana') == ('A', 'N', 'A', 'N', 'A', 'B')
+
+def test_exec_hints15():
+    from dataclasses import dataclass
+    @exec_hints
+    @dataclass
+    class Bot:
+        alignment: bool
+        serial: int
+        name: str
+    b= Bot(123123, '12', 2)
+    assert b.alignment == True
+    assert b.serial == 12
+    assert b.name == '2'

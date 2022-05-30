@@ -40,6 +40,12 @@ def exec_hints(func):
     ann = typing.get_type_hints(func)
     spec = inspect.getfullargspec(func)
 
+    if inspect.isclass(func):
+        if spec.args[0] == 'self':
+            spec.args.pop(0)
+        else:
+            raise TypeError(f'First argument to a class signature must be self, failed on {spec.args}')
+
     args, vargs = args[:len(spec.args)],args[len(spec.args):]
 
     args = [apply_hint(value,ann[name]) if name in ann else value

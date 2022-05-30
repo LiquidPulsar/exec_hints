@@ -151,3 +151,20 @@ print(foo('banana'))
 >>> BANANA
 >>> ('A', 'N', 'A', 'N', 'A', 'B')
 ```
+
+Works with classes, including dataclasses
+```py
+import exec_hints
+from dataclasses import dataclass
+
+@exec_hints
+@dataclass
+class Bot:
+    alignment: bool
+    serial: int
+    name: str
+
+
+print(Bot(123123, '12', 2))
+>>> Bot(alignment=True, serial=12, name='2')
+```
