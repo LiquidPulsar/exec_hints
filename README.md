@@ -4,7 +4,7 @@ Pretty comprehensive typehint evaluator to give you code that extra bit of zazz 
 
 For all examples, here's the obvious prerequisite
 ```py
-from exec_hints import _UnionType, exec_hints, Literal
+from exec_hints import exec_hints, check_hints, _UnionType, Literal
 ```
 Alternatively, you can just `import exec_hints` and use the module as a callable!
 
@@ -152,7 +152,7 @@ print(foo('banana'))
 >>> ('A', 'N', 'A', 'N', 'A', 'B')
 ```
 
-Works with classes, including dataclasses
+Works with classes, including dataclasses. As of 0.1.4 it's a bit scuffed as the result is a function that calls the constructor of the class, but it works.
 ```py
 import exec_hints
 from dataclasses import dataclass
@@ -167,4 +167,16 @@ class Bot:
 
 print(Bot(123123, '12', 2))
 >>> Bot(alignment=True, serial=12, name='2')
+```
+
+The `check_hints` function is useful for debugging or making sure your hints are correct. Works as you would expect it to similar to `exec_hints`, but will raise an error if the hint fails. Literal checks are also done via equality, or if the literal is callable, it will be called on the arg and checked for truthiness.
+```py
+from exec_hints import check_hints
+
+@check_hints
+def foo(arg:int|Literal(str.upper)):
+    print(arg)
+
+foo('banana') # FAILS
+foo('BANANA') # PASSES
 ```

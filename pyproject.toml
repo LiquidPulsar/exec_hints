@@ -7,7 +7,7 @@ name = "exec_hints"
 authors = [{ name = "LiquidPulsar" }]
 readme = "README.md"
 license = { file = "LICENSE" }
-version = "0.1.1"
+version = "0.1.4"
 description = "Pretty comprehensive typehint evaluator, gives your Python functions that extra bit of zazz and illegibility they always needed."
 
 [project.urls]
