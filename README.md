@@ -1,15 +1,15 @@
 # exec_hints
-Pretty comprehensive typehint evaluator to give you code that extra bit of zazz and illegibility it always needed
+Pretty comprehensive typehint evaluator to give you code that extra bit of zazz and illegibility it always needed.
 
 
-For all examples, here's the obvious prerequisite
+For all examples, here's the obvious prerequisite:
 ```py
 from exec_hints import exec_hints, check_hints, _UnionType, Literal
 ```
 Alternatively, you can just `import exec_hints` and use the module as a callable!
 
 
-Let's start off small: you can specify a hint on an argument and it'll convert it
+Let's start off small: you can specify a hint on an argument and it'll convert it:
 ```py
 @exec_hints
 def foo(arg:int):
@@ -36,7 +36,7 @@ def foo(arg:set[int]):
 foo('12')
 >>> {1, 2} True
 ```
-A single argument to dict will modify all values, 2 arguments means the first applies to keys, 2nd to values
+A single argument to `dict` will modify all values, two arguments means the first applies to keys and the second to values:
 ```py
 @exec_hints
 def foo(arg:dict[int]):
@@ -45,7 +45,7 @@ def foo(arg:dict[int]):
 foo({'a':'123',12:13.2})
 >>> {'a': 123, 12: 13} dict_keys(['a', 12])
 ```
-Works with Unions (more on that later)
+Works with `Union`s (more on that later):
 ```py
 @exec_hints
 def foo(arg:set[int|str]):
@@ -54,7 +54,7 @@ def foo(arg:set[int|str]):
 foo('1a2')
 >>> {1, 'a', 2} False
 ```
-If an iterable hint is provided with a number of arguments matching what was passed, each subhint will be applied to corresponding arguments
+If an iterable hint is provided with a number of arguments matching what was passed, each subhint will be applied to corresponding arguments:
 ```py
 @exec_hints
 def foo(arg:list[int,str,int]):
@@ -63,7 +63,7 @@ def foo(arg:list[int,str,int]):
 foo('1a2')
 >>> [1, 'a', 2] [2, 'a', 1]
 ```
-...and of course, we can nest these 😎
+...and of course, we can nest these 😎:
 ```py
 @exec_hints
 def foo(arg:list[int,int|str,tuple[int|float|str]]):
@@ -72,7 +72,7 @@ def foo(arg:list[int,int|str,tuple[int|float|str]]):
 foo(('1','a',['1','2.67','b']))
 >>> [1, 'a', (1, 2.67, 'b')]
 ```
-If several options are given, it tries each in turn
+If several options are given, it tries each in turn:
 ```py
 @exec_hints
 def foo(arg:list[int,int|str]|tuple[int|float|str]):
@@ -85,7 +85,7 @@ foo(['1','2.67','b'])
 foo(['1','2.67'])
 >>> [1, '2.67']
 ```
-You can pass your own functions in here, but they cant directly be used with |
+You can pass your own functions in here but they can't directly be used with `|`.
 Blame Python, not me.
 ```py
 @exec_hints
@@ -97,8 +97,8 @@ foo('banana')
 ```
 There's a workaround for that tho!
 `list|1` isnt supported by Python, so we have a class for that: `Literal`
-Accepts a callable or a literal (ok the class name isnt the best, accepting any suggestions)
-If it's callable, will try call on the arg, otherwise will just return itself
+which accepts a callable or a literal (ok, the class name isnt the best; accepting any suggestions).
+If it's callable, it will try to call it, otherwise will just return itself:
 ```py
 @exec_hints
 def foo(arg:int|Literal(0)):
@@ -108,7 +108,7 @@ foo('banana')
 >>> 0
 ```
 We can use it to chain builtins that wouldnt normally be allowed.
-Also note you can use it with `[]` syntax too
+Also, note you can use it with `[]` syntax too:
 ```py
 @exec_hints
 def foo(arg:int|Literal[str.upper]):
@@ -117,8 +117,8 @@ def foo(arg:int|Literal[str.upper]):
 foo('banana')
 >>> BANANA
 ```
-This documentation would have to be a few miles long to cover all of this
-So here's a few examples:
+This documentation would have to be a few miles long to cover all of this,
+so here's a few examples:
 ```py
 @exec_hints
 def foo(message:int|tuple[int]|list[0], dct:dict[int,tuple[str.lower]]):
@@ -131,7 +131,7 @@ foo('a1',{'213':'BaNaNa','444':'BoBa'})
 ```
 Uhh, it works on a lot of stuff :)
 Notably you can manipulate `*args` and `**kwargs` as normal.
-Works with defaults too, but it will try to apply the hint to the default provided
+Works with defaults too, but it will try to apply the hint to the default provided:
 ```py
 @exec_hints
 def a(a,b:str.upper,c:tuple[int],d=12,*e:lambda x:map(str,x),f:int|Literal(-3)=3,**g:dict[str]):
@@ -140,7 +140,7 @@ def a(a,b:str.upper,c:tuple[int],d=12,*e:lambda x:map(str,x),f:int|Literal(-3)=3
 a(1,'bb',['2','3'],4,5,banana=1,apple=2)
 >>> 1 BB (2, 3) 4 ('5',) 3 {'banana': '1', 'apple': '2'}
 ```
-You can typehint return values too 🎉
+You can typehint return values too 🎉!
 ```py
 @exec_hints
 def foo(arg:int|Literal(str.upper)) -> lambda x:tuple(reversed(x)):
